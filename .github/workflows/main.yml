@@ -8,7 +8,7 @@ on:
 
 jobs:
   build-and-release:
-    name: Build & Release
+    name: 🚀 Build & Release
     runs-on: macos-latest
 
     steps:
@@ -46,4 +46,4 @@ jobs:
             build/app/outputs/flutter-apk/*.apk
             build/ios/ipa/*.ipa
           tag: v${{ github.run_number }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAT_TOKEN }}
