@@ -1,4 +1,4 @@
-name: Mobile Release
+name: Build & Release
 
 on:
   push:
@@ -7,12 +7,19 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-and-release:
+    name: Build & Release
     runs-on: macos-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      - name: Set up Java  (si besoin pour ton projet)
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
@@ -23,33 +30,26 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Build Android APK
-        run: flutter build apk --release
+      - name: Run tests
+        run: flutter test --coverage
 
-      - name: Upload APK artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: app-release-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+      - name: Build Android APK
+        run: flutter build apk --release --split-per-abi
 
       - name: Build iOS IPA
-        run: flutter build ipa --export-method ad-hoc --no-codesign
+        run: |
+          flutter build ipa --no-codesign
+          cd build/ios/ipa
+          # si ton .ipa est générique dans build/ios/ipa/*.ipa, pas besoin de retravailler le zip
 
-      - name: Upload IPA artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: app-release-ipa
-          path: build/ios/ipa
-
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
       - name: Create GitHub Release
         uses: ncipollo/release-action@v1
         with:
+          # paths séparés par un saut de ligne ou une virgule
           artifacts: |
-            app-release-apk
-            app-release-ipa
+            build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+            build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+            build/ios/ipa/*.ipa
+          # tu peux générer un tag automatique ou reprendre la version Flutter
+          tag: v${{ github.run_number }}
           token: ${{ secrets.GITHUB_TOKEN }}
