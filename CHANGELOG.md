@@ -1,3 +1,12 @@
+## [1.0.5] – 2025-05-15
+
+### Added
+- Nouvelle page de profil avec upload d’avatar
+- Bouton “Partager” sur l’écran d’accueil
+
+### Fixed
+- Correction du plantage sur Android 11
+
 ## [1.0.0+1] – 2025-05-07
 
 ### Fixed
