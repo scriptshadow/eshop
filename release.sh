@@ -49,3 +49,13 @@ git push origin "${BRANCH}"
 git push origin "v${VERSION}"
 
 echo "Release ${VERSION} created successfully!"
+
+# 5. Delete release branch if current branch is 'release'
+if [[ "$BRANCH" == "release" ]]; then
+  echo "Switching to main branch..."
+  git checkout main
+  echo "Deleting local branch 'release'..."
+  git branch -d release
+  echo "Deleting remote branch 'release'..."
+  git push origin --delete release
+fi
