@@ -1,4 +1,8 @@
-## [1.0.6] – 2025-05-15
+# Changelog
+## [1.0.6] - 2025-05-07
+
+### Added
+- 
 
 ### Added
 - Nouvelle page de profil avec upload d’avatar
