@@ -1,4 +1,8 @@
-## [1.0.0+1] – 2025-05-07
+# Changelog
+## [1.0.1] - 2025-05-07
+
+### Added
+- 
 
 ### Fixed
 - Correction du crash à l’ouverture de la page d'acceuil
